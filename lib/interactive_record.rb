@@ -46,6 +46,15 @@ class InteractiveRecord
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
+  
+ def self.find_by_name(name)
+    sql = <<-SQL
+      SELECT * FROM #{table_name}
+      WHERE name = ?
+      SQL
+
+    DB[:conn].execute(sql, name);
+end
 
 def self.find_by(attribute)
     column_name = attribute.keys[0].to_s
